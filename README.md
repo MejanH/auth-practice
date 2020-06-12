@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM
+# JWT Authentication with TypeORM, Express, Sqlite
 
 ## Working with authentication
 
