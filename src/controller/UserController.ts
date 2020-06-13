@@ -7,7 +7,7 @@ class UserController {
   static listAll = async (req: Request, res: Response) => {
     const userRepository = getRepository(User);
     const users = await userRepository.find({
-      select: ["id", "username", "role"], //We dont want to send the password on response
+      select: ["id", "username", "role", "createdAt"], //We dont want to send the password on response
     });
 
     res.send(users);
@@ -52,7 +52,7 @@ class UserController {
     const userRepository = getRepository(User);
     try {
       const user = await userRepository.findOneOrFail(id, {
-        select: ["id", "username", "role"],
+        select: ["id", "username", "role", "createdAt"],
       });
       res.send(user);
     } catch (error) {
@@ -112,6 +112,21 @@ class UserController {
 
     //After all send a 204 (no content, but accepted) response
     res.status(204).send("User deleted successfully");
+  };
+
+  static getProfilewithPayloadId = async (req: Request, res: Response) => {
+    // get the user id from checkJwt middleware setted into local response
+    const id = res.locals.jwtPayload.userId;
+
+    const userRepository = getRepository(User);
+    try {
+      const user = await userRepository.findOneOrFail(id, {
+        select: ["id", "username", "role", "createdAt"],
+      });
+      res.send(user);
+    } catch (error) {
+      res.status(404).send("User Not Found");
+    }
   };
 }
 

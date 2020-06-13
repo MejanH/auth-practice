@@ -11,7 +11,7 @@ router.get("/", [checkJwt, checkRole(["ADMIN"])], UserController.listAll);
 // Add new user
 router.post("/", [checkJwt, checkRole(["ADMIN"])], UserController.newUser);
 
-// Get single user
+// Get single user from Admin account
 router.get(
   "/:id([0-9]+)",
   [checkJwt, checkRole(["ADMIN"])],
@@ -30,6 +30,13 @@ router.delete(
   "/:id([0-9]+)",
   [checkJwt, checkRole(["ADMIN"])],
   UserController.deleteUser
+);
+
+// Get Users Profile from any role
+router.get(
+  "/profile",
+  [checkJwt, checkRole(["ADMIN", "USER", "CLIENT"])],
+  UserController.getProfilewithPayloadId
 );
 
 export default router;
